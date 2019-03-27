@@ -8,14 +8,14 @@ export class Preloader extends Phaser.Scene {
     })
   }
   preload() {
+    this.load.on('complete', () => {
+      this.scene.start('game')
+      console.log('Preloader done')
+    })
+    
     this.load.image('player', '/assets/player_ship.png')
     this.load.image('alien', '/assets/alien.png')
     this.load.image('rocket', '/assets/rocket.png')
     console.log('Preloader preload')
-  }
-
-  create() {
-    this.scene.start('game');
-    console.log('Preloader create')
   }
 }
