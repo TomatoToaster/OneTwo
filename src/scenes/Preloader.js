@@ -1,6 +1,7 @@
-import { Scene } from 'phaser'
-
-export class Preloader extends Scene {
+/**
+ * Preloader Scene that will import all of the images before starting the Game
+ */
+export class Preloader extends Phaser.Scene {
   constructor() {
     super({
       key: 'preloader'

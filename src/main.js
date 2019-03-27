@@ -1,10 +1,11 @@
-import Phaser from "phaser"
+import "phaser"
 import { Preloader, Game } from './scenes'
+import { WORLD_WIDTH, WORLD_HEIGHT } from './constants'
 
 const config = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  width: WORLD_WIDTH,
+  height: WORLD_HEIGHT,
   physics: {
     default: 'arcade',
     arcade: {
