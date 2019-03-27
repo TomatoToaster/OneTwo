@@ -3,7 +3,9 @@ Asteroids like game where you alternate between moving and firing.
 Runs in a Web Browser
 
 ## Getting Started
-TODO
+Requires node + npm. Open this directory in a terminal and then run...
+1. npm install
+2. npm start
 
 ## Process
 Built using Phaser3
