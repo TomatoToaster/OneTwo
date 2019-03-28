@@ -1,5 +1,5 @@
 import "phaser"
-import { Preloader, Game } from './scenes'
+import { BootUp, Game } from './scenes'
 import { WORLD_WIDTH, WORLD_HEIGHT } from './constants'
 
 const config = {
@@ -13,7 +13,7 @@ const config = {
     }
   },
   scene: [
-    Preloader,
+    BootUp,
     Game
   ]
 }
