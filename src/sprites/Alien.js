@@ -1,4 +1,4 @@
-import { ENEMY_ROTATION_SPEED, ENEMY_SPEED } from '../constants'
+import { ENEMY_ROTATION_SPEED, ENEMY_SPEED, ENEMY_DIE_TIME, ENEMY_DEATH_TINT } from '../constants'
 
 const ENEMY_ROTATION_SPEED_IN_DEGREES = Phaser.Math.RadToDeg(ENEMY_ROTATION_SPEED)
 
@@ -20,12 +20,21 @@ export class Alien extends Phaser.GameObjects.Sprite {
     this.body.setCollideWorldBounds(true)
   }
 
+  gotHit() {
+    this.isHit = true
+    this.body.stop()
+    this.setTint(ENEMY_DEATH_TINT)
+    setTimeout(() => {
+      this.destroy()
+    }, ENEMY_DIE_TIME)
+  }
+
   /**
    * Update function necessary to run with the Game's Physics
    */
   update() {
-    // Only move the Alien if it has been assigned a valid target
-    if (this.target) {
+    // Only move the Alien if it has been assigned a valid target and hasn't been hit
+    if (this.target && !this.isHit) {
       this.targetFollow()
       this.scene.physics.velocityFromRotation(this.rotation, ENEMY_SPEED, this.body.velocity)
     }
