@@ -14,9 +14,9 @@ export class BootUp extends Phaser.Scene {
       console.log('BootUp Preloader done')
     })
     
-    this.load.image('player', '/assets/player_ship.png')
-    this.load.image('alien', '/assets/alien.png')
-    this.load.image('rocket', '/assets/rocket.png')
+    this.load.image('player', '/OneTwoAssets/player_ship.png')
+    this.load.image('alien', '/OneTwoAssets/alien.png')
+    this.load.image('rocket', '/OneTwoAssets/rocket.png')
     console.log('Assets Loaded')
   }
 }
