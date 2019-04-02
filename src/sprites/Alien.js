@@ -1,4 +1,4 @@
-import { ENEMY_ROTATION_SPEED, ENEMY_SPEED, ENEMY_DIE_TIME, ENEMY_DEATH_TINT } from '../constants'
+import { ENEMY_ROTATION_SPEED, ENEMY_SPEED, ENEMY_DIE_TIME, ENEMY_DEATH_TINT, ENEMY_SPEED_SCALING, ENEMY_ROTATION_SPEED_SCALING } from '../constants'
 
 const ENEMY_ROTATION_SPEED_IN_DEGREES = Phaser.Math.RadToDeg(ENEMY_ROTATION_SPEED)
 
@@ -15,7 +15,8 @@ export class Alien extends Phaser.GameObjects.Sprite {
    * Assigns a new target for the Alien to follow
    * @param {ArcadeSprite} target 
    */
-  assignTarget(target) {
+  assignTarget(target, speedIncrease) {
+    this.speedIncrease = speedIncrease ? speedIncrease : 0
     this.target = target
     this.body.setCollideWorldBounds(true)
   }
@@ -34,9 +35,10 @@ export class Alien extends Phaser.GameObjects.Sprite {
    */
   update() {
     // Only move the Alien if it has been assigned a valid target and hasn't been hit
+    const adjustedSpeed = ENEMY_SPEED * (1 + (this.speedIncrease * ENEMY_SPEED_SCALING))
     if (this.target && !this.isHit) {
       this.targetFollow()
-      this.scene.physics.velocityFromRotation(this.rotation, ENEMY_SPEED, this.body.velocity)
+      this.scene.physics.velocityFromRotation(this.rotation, adjustedSpeed, this.body.velocity)
     }
   }
 
@@ -45,6 +47,7 @@ export class Alien extends Phaser.GameObjects.Sprite {
    */
   targetFollow() {
     const angleToPointer = Phaser.Math.Angle.BetweenPoints(this, this.target)
+    const adjustedRotationSpeed = ENEMY_ROTATION_SPEED_IN_DEGREES * (1 + (this.speedIncrease * ENEMY_ROTATION_SPEED_SCALING))
     let angleDelta = angleToPointer - this.rotation
     
     angleDelta = atan2(sin(angleDelta), cos(angleDelta))
@@ -53,7 +56,7 @@ export class Alien extends Phaser.GameObjects.Sprite {
       this.body.rotation = angleToPointer
       this.body.setAngularVelocity(0)
     } else {
-      this.body.setAngularVelocity(Math.sign(angleDelta) * ENEMY_ROTATION_SPEED_IN_DEGREES)
+      this.body.setAngularVelocity(Math.sign(angleDelta) * adjustedRotationSpeed)
     }
   }
 

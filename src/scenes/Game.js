@@ -1,5 +1,9 @@
 import { Rocket, Alien } from '../sprites'
-import { MAX_BULLETS, TRAVEL_TIME_MS, WORLD_HEIGHT, PLAYER_DEATH_TINT, ENEMY_WIN_TINT } from '../constants'
+import { 
+  MAX_BULLETS, TRAVEL_TIME_MS, WORLD_HEIGHT, PLAYER_DEATH_TINT,
+  ENEMY_WIN_TINT, WORLD_WIDTH, FACE_DOWN, FACE_RIGHT, FACE_LEFT,
+  FACE_UP
+} from '../constants'
 
 /***
  * Main Scene where all the game logic happens
@@ -42,9 +46,7 @@ export class Game extends Phaser.Scene {
     // Adding overlap collider for any alien and any rocket
     this.physics.add.overlap(this.aliens, this.rockets, alienHitByRocket, null, this);
 
-    const alien = this.aliens.get(200, 400)
-    alien.assignTarget(this.player)
-    console.log(alien)
+    spawnNewAlien(this)
 
     // Setting text about bullet count and score
     this.bulletInfo = this.add.text(0, WORLD_HEIGHT - 15, 'Bullet Info', { fill: '#00ff00' });
@@ -110,4 +112,37 @@ function alienHitByRocket(alien, rocket) {
   this.score += 1
   alien.gotHit()
   rocket.destroy()
+  spawnNewAlien(this)
+}
+
+/**
+ * Adds a new alien to the game (assuming aliens has been instantiated as a group)
+ * Randomly chooses a location on one of the Game's edges to spawn alien
+ * Also orients alien
+ * @param {Game} game 
+ */
+function spawnNewAlien(game) {
+  const seed = Math.floor(Math.random() * 4)
+  const PI2 = Phaser.Math.PI2
+  let x, y, rotation
+  if (seed == 0) {
+    x = 0
+    y = Phaser.Math.Between(0, WORLD_HEIGHT)
+    rotation = FACE_RIGHT
+  } else if (seed == 1) {
+    x = Phaser.Math.Between(0, WORLD_WIDTH)
+    y = 0
+    rotation = FACE_DOWN
+  } else if (seed == 2) {
+    x = WORLD_WIDTH
+    y = Phaser.Math.Between(0, WORLD_HEIGHT)
+    rotation = FACE_LEFT
+  } else {
+    x = Phaser.Math.Between(0, WORLD_WIDTH)
+    y = WORLD_HEIGHT
+    rotation = FACE_UP
+  }
+  const alien = game.aliens.get(x,y)
+  alien.rotation = rotation
+  alien.assignTarget(game.player, game.score)
 }
