@@ -3,6 +3,8 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
 
 const ProjectRoot = path.resolve(__dirname, '..');
 
@@ -25,9 +27,16 @@ module.exports = {
         use: "raw-loader"
       },
       {
-        test: /\.(gif|png|jpe?g|svg|xml)$/i,
+        test: /\.(gif|png|jpe?g|svg|xml|ttf)$/i,
         use: "file-loader"
-      }
+      },
+      {
+        test: /\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          "css-loader"
+        ]
+      },
     ]
   },
   plugins: [
@@ -46,6 +55,9 @@ module.exports = {
         from: path.resolve(ProjectRoot, 'public'),
         to: path.resolve('dist')
       }
-    ])
+    ]),
+    new MiniCssExtractPlugin({
+      filename: "styles.css"
+    }),
   ]
 };
