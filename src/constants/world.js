@@ -4,3 +4,6 @@ export const FACE_RIGHT = 0
 export const FACE_LEFT = Math.PI
 export const FACE_DOWN = Math.PI * 0.5
 export const FACE_UP = Math.PI * 1.5
+export const LEVEL_2_SCORE = 10
+export const LEVEL_3_SCORE = 20
+export const LEVEL_4_SCORE = 30

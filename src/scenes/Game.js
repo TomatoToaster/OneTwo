@@ -2,7 +2,7 @@ import { Rocket, Alien } from '../sprites'
 import { 
   MAX_BULLETS, TRAVEL_TIME_MS, WORLD_HEIGHT, PLAYER_DEATH_TINT,
   ENEMY_WIN_TINT, WORLD_WIDTH, FACE_DOWN, FACE_RIGHT, FACE_LEFT,
-  FACE_UP
+  FACE_UP, LEVEL_2_SCORE, LEVEL_3_SCORE, LEVEL_4_SCORE,
 } from '../constants'
 
 /***
@@ -17,6 +17,7 @@ export class Game extends Phaser.Scene {
 
   create() {
     // Creating the player ship and rotating it to face upwards in the beginning
+    this.backgrounds = addBackgrounds(this)
     this.player = this.physics.add.sprite(400, 300, 'player')
     this.player.rotation = - Phaser.Math.PI2 / 4
     this.player.moveNext = true
@@ -48,7 +49,9 @@ export class Game extends Phaser.Scene {
 
     spawnNewAlien(this)
 
-    // Setting text about bullet count and score
+    // Setting text about, level, bullet count, and score
+    this.level = 1
+    this.levelText = this.add.text(WORLD_WIDTH - 70, 0, 'Level ' + this.level, { fill: '#00ff00'})
     this.bulletInfo = this.add.text(0, WORLD_HEIGHT - 15, 'Bullet Info', { fill: '#00ff00' });
     this.scoreText = this.add.text(0,0, 'Score: 0', {fill: '#00ff00'});
 
@@ -87,6 +90,9 @@ export class Game extends Phaser.Scene {
     this.scoreText.setText([
       'Score: ' + this.score
     ]);
+    this.levelText.setText([
+      'Level ' + this.level
+    ]);
   }
 }
 
@@ -109,9 +115,9 @@ function playerHitByAlien(player, alien) {
  * @param {Rocket} rocket 
  */
 function alienHitByRocket(alien, rocket) {
-  this.score += 1
   alien.gotHit()
   rocket.destroy()
+  updateScore(this)
   spawnNewAlien(this)
 }
 
@@ -123,7 +129,6 @@ function alienHitByRocket(alien, rocket) {
  */
 function spawnNewAlien(game) {
   const seed = Math.floor(Math.random() * 4)
-  const PI2 = Phaser.Math.PI2
   let x, y, rotation
   if (seed == 0) {
     x = 0
@@ -145,4 +150,40 @@ function spawnNewAlien(game) {
   const alien = game.aliens.get(x,y)
   alien.rotation = rotation
   alien.assignTarget(game.player, game.score)
+}
+
+/**
+ * Adds backgrounds into the game in reverse level order so that when the the
+ * first level is destroyed, the image underneath will be revealed
+ * @param {Game} game 
+ * @return {Array} array of images to be deleted with destroy()
+ */
+function addBackgrounds(game) {
+  let level4 = game.add.image(WORLD_WIDTH/2, WORLD_HEIGHT/2, 'background-red')
+  let level3 = game.add.image(WORLD_WIDTH/2, WORLD_HEIGHT/2, 'background-purple')
+  let level2 = game.add.image(WORLD_WIDTH/2, WORLD_HEIGHT/2, 'background-blue')
+  let level1 = game.add.image(WORLD_WIDTH/2, WORLD_HEIGHT/2, 'background-black')
+  return [ level1, level2, level3, level4 ]
+}
+
+
+/**
+ * Update the score and perform actions that are sensitive to its change
+ * @param {Game} game 
+ */
+function updateScore(game) {
+  const newScore = game.score + 1
+  game.score = newScore
+  if (newScore == LEVEL_2_SCORE) {
+    game.level = 2
+    game.backgrounds[0].destroy()
+  }
+  else if (newScore == LEVEL_3_SCORE) {
+    game.level = 3
+    game.backgrounds[1].destroy()
+  }
+  else if (newScore == LEVEL_4_SCORE) {
+    game.level = 4
+    game.backgrounds[2].destroy()
+  }
 }
