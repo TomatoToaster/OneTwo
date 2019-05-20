@@ -3,7 +3,6 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 
 const ProjectRoot = path.resolve(__dirname, '..');
@@ -33,7 +32,7 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          MiniCssExtractPlugin.loader,
+          "style-loader",
           "css-loader"
         ]
       },
@@ -56,8 +55,5 @@ module.exports = {
         to: path.resolve('dist')
       }
     ]),
-    new MiniCssExtractPlugin({
-      filename: "styles.css"
-    }),
   ]
 };

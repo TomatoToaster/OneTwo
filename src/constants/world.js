@@ -7,3 +7,4 @@ export const FACE_UP = Math.PI * 1.5
 export const LEVEL_2_SCORE = 10
 export const LEVEL_3_SCORE = 20
 export const LEVEL_4_SCORE = 30
+export const GAME_TEXT_OFFSET = 4

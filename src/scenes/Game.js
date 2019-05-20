@@ -2,7 +2,7 @@ import { Rocket, Alien } from '../sprites'
 import { 
   MAX_BULLETS, TRAVEL_TIME_MS, WORLD_HEIGHT, PLAYER_DEATH_TINT,
   ENEMY_WIN_TINT, WORLD_WIDTH, FACE_DOWN, FACE_RIGHT, FACE_LEFT,
-  FACE_UP, LEVEL_2_SCORE, LEVEL_3_SCORE, LEVEL_4_SCORE,
+  FACE_UP, LEVEL_2_SCORE, LEVEL_3_SCORE, LEVEL_4_SCORE, GAME_TEXT_OFFSET
 } from '../constants'
 
 /***
@@ -51,9 +51,9 @@ export class Game extends Phaser.Scene {
 
     // Setting text about, level, bullet count, and score
     this.level = 1
-    this.levelText = this.add.text(WORLD_WIDTH - 70, 0, 'Level ' + this.level, { fill: '#00ff00'})
-    this.bulletInfo = this.add.text(0, WORLD_HEIGHT - 15, 'Bullet Info', { fill: '#00ff00' });
-    this.scoreText = this.add.text(0,0, 'Score: 0', {fill: '#00ff00'});
+    this.levelText = this.add.text(WORLD_WIDTH - 68 - GAME_TEXT_OFFSET, GAME_TEXT_OFFSET, 'Level ' + this.level, { fill: '#00ff00'})
+    this.bulletInfo = this.add.text(GAME_TEXT_OFFSET, WORLD_HEIGHT - 15 - GAME_TEXT_OFFSET, 'Bullet Info', { fill: '#00ff00' });
+    this.scoreText = this.add.text(GAME_TEXT_OFFSET, GAME_TEXT_OFFSET, 'Score: 0', {fill: '#00ff00'});
 
     // Logic for when the player clicks a button
     this.input.on('pointerdown', (pointer) => {
