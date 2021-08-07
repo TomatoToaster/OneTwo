@@ -1,16 +1,16 @@
 const webpack = require("webpack");
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
+const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 
-const ProjectRoot = path.resolve(__dirname, '..');
 
 
 module.exports = {
   mode: "development",
-  entry: path.resolve(ProjectRoot, 'src', 'main.js'),
+  context: path.resolve(__dirname, '..'),
+  entry: path.resolve('src', 'main.js'),
   devtool: "eval-source-map",
   module: {
     rules: [
@@ -39,9 +39,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin(["dist"], {
-      root: ProjectRoot
-    }),
+    new CleanWebpackPlugin(),
     new webpack.DefinePlugin({
       CANVAS_RENDERER: JSON.stringify(true),
       WEBGL_RENDERER: JSON.stringify(true)
@@ -49,11 +47,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./index.html"
     }),
-    new CopyWebpackPlugin([
-      { 
-        from: path.resolve(ProjectRoot, 'public'),
-        to: path.resolve('dist')
-      }
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [
+        {from: 'assets', to: 'assets',},
+      ],
+    }),
   ]
 };
