@@ -13,14 +13,14 @@ export class BootUp extends Phaser.Scene {
       this.scene.start('game')
       console.log('BootUp Preloader done')
     })
-    
-    this.load.image('background-black', '/OneTwoAssets/background-black.png')
-    this.load.image('background-blue', '/OneTwoAssets/background-blue.png')
-    this.load.image('background-purple', '/OneTwoAssets/background-purple.png')
-    this.load.image('background-red', '/OneTwoAssets/background-red.png')
-    this.load.image('player', '/OneTwoAssets/player_ship.png')
-    this.load.image('alien', '/OneTwoAssets/alien.png')
-    this.load.image('rocket', '/OneTwoAssets/rocket.png')
-    console.log('Assets Loaded')
+
+    this.load.image('background-black', '/assets/background-black.png')
+    this.load.image('background-blue', '/assets/background-blue.png')
+    this.load.image('background-purple', '/assets/background-purple.png')
+    this.load.image('background-red', '/assets/background-red.png')
+    this.load.image('player', '/assets/player_ship.png')
+    this.load.image('alien', '/assets/alien.png')
+    this.load.image('rocket', '/assets/rocket.png')
+    console.log('assets Loaded')
   }
 }
